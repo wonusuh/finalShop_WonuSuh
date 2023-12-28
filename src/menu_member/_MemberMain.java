@@ -28,7 +28,9 @@ public class _MemberMain implements MenuCommand {
 		} else if (sel == 2) { // 구매내역
 			cont.setNext("MemberCart");
 		} else if (sel == 3) { // 게시판
+			cont.setNext("MemberBoard");
 		} else if (sel == 4) { // 나의 정보
+			cont.setNext("MemberInfo");
 		} else if (sel == 5) { // 회원 탈퇴
 		} else if (sel == 6) { // 로그아웃
 		} else if (sel == 0) { // 프로그램 종료

@@ -37,7 +37,7 @@ public class Util {
 	}
 
 	public static boolean isAppropriateId(String id) {
-		Pattern p = Pattern.compile("^[0-1A-Za-z]{4,10}$");
+		Pattern p = Pattern.compile("^[0-9A-Za-z]{4,10}$");
 		Matcher m = p.matcher(id);
 		if (m.matches())
 			return true;
@@ -58,5 +58,11 @@ public class Util {
 		if (m.matches())
 			return true;
 		return false;
+	}
+
+	public static String getContent(String string) {
+		System.out.printf("▶ %s 입력 : ", string);
+		String input = sc.nextLine();
+		return input;
 	}
 }

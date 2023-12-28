@@ -1,20 +1,9 @@
 package dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import controller.MallController;
-import dto.Board;
 import dto.Cart;
 import dto.Item;
 import util.Util;
@@ -54,8 +43,8 @@ public class ItemDAO {
 				item.getCategoryName(), item.getItemName(), item.getPrice()));
 	}
 
-	public ArrayList<String> getCategoryList() {
-		ArrayList<String> list = new ArrayList<String>();
+	public List<String> getCategoryList() {
+		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < itemList.size(); i += 1) {
 			boolean isDupl = false;
 			for (int j = 0; j < list.size(); j += 1) {
@@ -103,5 +92,13 @@ public class ItemDAO {
 				return item.getItemNum();
 		}
 		return -1;
+	}
+
+	public Item getTheObjectByNum(int key) { // 아이템 고유번호로 검색해서 해당하는 아이템객체를 리턴합니다.
+		for (Item o : itemList) {
+			if (o.getItemNum() == key)
+				return o;
+		}
+		return null;
 	}
 }

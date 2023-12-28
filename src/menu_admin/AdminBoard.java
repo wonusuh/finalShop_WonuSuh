@@ -26,7 +26,7 @@ public class AdminBoard implements MenuCommand {
 		if (sel == 0) { // 프로그램 종료
 			cont.setNext(null);
 		} else if (sel == 1) { // 게시글 목록
-			boardDAO.showBoard();
+			boardDAO.showAdminBoard();
 		} else if (sel == 2) { // 게시글 삭제
 		} else if (sel == 3) { // 뒤로가기
 			cont.setNext("AdminMain");

@@ -1,15 +1,15 @@
 package menu_member;
 
-import java.util.ArrayList;
+import java.util.List;
+
 import _mall.MenuCommand;
 import controller.MallController;
-import dao.CartDAO;
 import dao.ItemDAO;
 import util.Util;
 
 public class MemberShopping implements MenuCommand {
 	private ItemDAO itemDAO;
-	private ArrayList<String> categories;
+	private List<String> categories;
 
 	@Override
 	public void init() {
