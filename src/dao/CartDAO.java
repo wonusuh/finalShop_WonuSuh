@@ -8,6 +8,7 @@ import java.util.Map;
 
 import dto.Cart;
 import dto.Item;
+import dto.Member;
 
 public class CartDAO {
 	ArrayList<Cart> cartList;
@@ -70,5 +71,15 @@ public class CartDAO {
 		}
 		System.out.printf("총 %d 개 ( %d 원 )\n", numberOfItems, total);
 		System.out.println("====================");
+	}
+
+	public void clearCartByObject(Member o) { // 장바구니에서 해당하는 회원의 주문을 모두 지웁니다.
+		for (int i = 0; i < cartList.size(); i += 1) {
+			if (cartList.get(i).getId().equals(o.getId())) {
+				cartList.remove(i);
+				i -= 1;
+			}
+			System.out.println(cartList);
+		}
 	}
 }

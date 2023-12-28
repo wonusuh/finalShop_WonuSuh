@@ -3,6 +3,7 @@ package dao;
 import java.util.ArrayList;
 
 import dto.Member;
+import util.Util;
 
 public class MemberDAO {
 	ArrayList<Member> memberList;
@@ -64,5 +65,26 @@ public class MemberDAO {
 			System.out.printf("[%-6d] [%10s] [%10s] [%10s]\n", m.getMemberNum(), m.getId(), m.getPw(),
 					m.getMemberName());
 		}
+	}
+
+	public void modifyMyPw(Member me) { // 내 pw를 변경합니다.
+		String pw = Util.getValue("비밀번호를 입력하세요.");
+		if (me.getPw().equals(pw)) {
+			System.out.println("변경할 비밀번호를 입력하세요.");
+			System.out.println("[ 비밀번호는 공백을 포함할 수 없으며 4 ~ 10글자 입니다. ]");
+			String afterPw = Util.getValue("비밀번호");
+			if (!Util.isAppropriatePw(afterPw)) {
+				System.out.println("비밀번호 조건을 만족하지 않습니다.");
+				return;
+			}
+			me.setPw(afterPw);
+			System.out.println("비밀번호를 변경했습니다.");
+		} else {
+			System.out.println("비밀번호가 일치하지 않습니다.");
+		}
+	}
+
+	public void quit(Member o) { // 해당하는 객체를 배열에서 지웁니다.
+		memberList.remove(o);
 	}
 }

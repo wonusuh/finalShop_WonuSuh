@@ -30,7 +30,7 @@ public class Util {
 	}
 
 	public static String getValue(String string) {
-		System.out.printf("▶ %s 입력 : ", string);
+		System.out.printf("▶ %s : ", string);
 		String input = sc.next();
 		sc.nextLine();
 		return input;
