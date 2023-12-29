@@ -34,7 +34,11 @@ public class _MemberMain implements MenuCommand {
 		} else if (sel == 5) { // 회원 탈퇴
 			cont.setNext("MemberQuit");
 		} else if (sel == 6) { // 로그아웃
+			cont.setLoginId(null);
+			cont.setNext("MallMain");
+			System.out.println("로그아웃에 성공했습니다.");
 		} else if (sel == 0) { // 프로그램 종료
+			cont.setNext(null);
 		}
 		return false;
 	}
