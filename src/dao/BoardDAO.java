@@ -90,7 +90,7 @@ public class BoardDAO {
 		Board post = new Board();
 		Board.increaseNum();
 		post.setBoradNum(Board.getNum());
-		String title = Util.getValue("제목");
+		String title = Util.getContent("제목");
 		post.setTitle(title);
 		String content = Util.getContent("내용");
 		post.setContents(content);
@@ -143,7 +143,7 @@ public class BoardDAO {
 		System.out.println("삭제에 실패했습니다.");
 	}
 
-	public void deleteAPostAsAdmin() {
+	public void deleteAPostAsAdmin() { // 관리자로 게시물을 한 개 지웁니다.
 		for (Board b : boardList) {
 			System.out.printf("(%3d) [ 제목 : %-10s 작성자 : %-10s 날짜 : %s 조회수 : %-3d ]\n", b.getBoradNum(), b.getTitle(),
 					b.getId(), b.getDate(), b.getHits());
@@ -159,5 +159,17 @@ public class BoardDAO {
 			}
 		}
 		System.out.println("존재하지 않는 게시물입니다.");
+	}
+
+	protected String getBoardDataAsString() { // 배열을 String으로 리턴합니다.
+		String data = "";
+		for (int i = 0; i < boardList.size(); i += 1) {
+			data += boardList.get(i).getBoradNum() + "/" + boardList.get(i).getTitle() + "/"
+					+ boardList.get(i).getContents() + "/" + boardList.get(i).getId() + "/" + boardList.get(i).getDate()
+					+ "/" + boardList.get(i).getHits();
+			if (i != boardList.size() - 1)
+				data += "\n";
+		}
+		return data;
 	}
 }

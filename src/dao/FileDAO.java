@@ -3,6 +3,7 @@ package dao;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,7 +63,7 @@ public class FileDAO {
 		itemDAO.putDataIn(getFileAsString(FileName.ITEM.name));
 	}
 
-	private static String getFileAsString(String fileName) {
+	private static String getFileAsString(String fileName) { // 파일을 읽어서 String으로 리턴합니다.
 		String data = "";
 		try (FileReader fr = new FileReader(CUR_PATH + fileName); BufferedReader br = new BufferedReader(fr)) {
 			while (true) {
@@ -79,5 +80,29 @@ public class FileDAO {
 		data = data.substring(0, data.length() - 1);
 		System.out.println(fileName + " 데이터를 로드했습니다.=====");
 		return data;
+	}
+
+	public static void collectDataFromDAOs() { // 각 DAO의 데이터들을 파일로 저장합니다.
+		BoardDAO boardDAO = BoardDAO.getInstance();
+		CartDAO cartDAO = CartDAO.getInstance();
+		ItemDAO itemDAO = ItemDAO.getInstance();
+		MemberDAO memberDAO = MemberDAO.getInstance();
+//		System.out.println(boardDAO.getBoardDataAsString());
+//		System.out.println(cartDAO.getCartDataAsString());
+//		System.out.println(itemDAO.getItemDataAsString());
+//		System.out.println(memberDAO.getMemberDataAsString());
+		save("board.txt", boardDAO.getBoardDataAsString());
+		save("cart.txt", cartDAO.getCartDataAsString());
+		save("item.txt", itemDAO.getItemDataAsString());
+		save("member.txt", memberDAO.getMemberDataAsString());
+	}
+
+	private static void save(String fileName, String data) { // String data 를 파일로 저장합니다.
+		try (FileWriter fr = new FileWriter(CUR_PATH + fileName)) {
+			fr.write(data);
+			System.out.printf("%s 에 저장했습니다.\n", fileName);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

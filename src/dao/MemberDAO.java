@@ -100,4 +100,15 @@ public class MemberDAO {
 		quit(getMemberById(id));
 		System.out.println("삭제에 성공했습니다.");
 	}
+
+	protected String getMemberDataAsString() { // 배열을 String으로 리턴합니다.
+		String data = "";
+		for (int i = 0; i < memberList.size(); i += 1) {
+			data += memberList.get(i).getMemberNum() + "/" + memberList.get(i).getId() + "/" + memberList.get(i).getPw()
+					+ "/" + memberList.get(i).getMemberName();
+			if (i != memberList.size() - 1)
+				data += "\n";
+		}
+		return data;
+	}
 }

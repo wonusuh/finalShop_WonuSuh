@@ -30,12 +30,12 @@ public class CartDAO {
 		for (String str : datas) {
 			String[] splitted = str.split("/");
 			Cart temp = new Cart();
+			Cart.increseNum();
 			temp.setCartNum(Cart.getNum());
 			temp.setId(splitted[1]);
 			temp.setItemNum(Integer.parseInt(splitted[2]));
 			temp.setItemCnt(Integer.parseInt(splitted[3]));
 			cartList.add(temp);
-			Cart.increseNum();
 		}
 	}
 
@@ -116,5 +116,16 @@ public class CartDAO {
 			System.out.printf("[%-3d] [%10s] [%10s] [%20d] %d개\n", key, o.getCategoryName(), o.getItemName(),
 					o.getPrice(), finalResult.get(key));
 		}
+	}
+
+	protected String getCartDataAsString() { // 배열을 String으로 리턴합니다.
+		String data = "";
+		for (int i = 0; i < cartList.size(); i += 1) {
+			data += cartList.get(i).getCartNum() + "/" + cartList.get(i).getId() + "/" + cartList.get(i).getItemNum()
+					+ "/" + cartList.get(i).getItemCnt();
+			if (i != cartList.size() - 1)
+				data += "\n";
+		}
+		return data;
 	}
 }

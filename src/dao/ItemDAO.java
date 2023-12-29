@@ -143,4 +143,15 @@ public class ItemDAO {
 		}
 		System.out.println("아이템삭제에 실패했습니다.");
 	}
+
+	protected String getItemDataAsString() { // 배열을 String으로 리턴합니다.
+		String data = "";
+		for (int i = 0; i < itemList.size(); i += 1) {
+			data += itemList.get(i).getItemNum() + "/" + itemList.get(i).getCategoryName() + "/"
+					+ itemList.get(i).getItemName() + "/" + itemList.get(i).getPrice();
+			if (i != itemList.size() - 1)
+				data += "\n";
+		}
+		return data;
+	}
 }

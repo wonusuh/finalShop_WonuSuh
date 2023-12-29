@@ -2,6 +2,7 @@ package menu_admin;
 
 import _mall.MenuCommand;
 import controller.MallController;
+import dao.FileDAO;
 import util.Util;
 
 public class _AdminMain implements MenuCommand {
@@ -32,9 +33,9 @@ public class _AdminMain implements MenuCommand {
 			cont.setNext("AdminBoard");
 		} else if (sel == 4) { // 로그아웃
 			System.out.println("[ 로그아웃 했습니다. ]");
-			cont.setLoginId(null);
 			cont.setNext("MallMain");
 		} else if (sel == 5) { // 파일저장
+			FileDAO.collectDataFromDAOs();
 		}
 		return false;
 	}

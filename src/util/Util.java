@@ -19,6 +19,7 @@ public class Util {
 			System.out.printf("▶ %s [%d-%d] : ", menu, start, end);
 			try {
 				int sel = Util.sc.nextInt();
+				sc.nextLine();
 				if (sel < start || sel > end)
 					throw new Exception();
 				return sel;
@@ -63,6 +64,9 @@ public class Util {
 	public static String getContent(String string) {
 		System.out.printf("▶ %s 입력 : ", string);
 		String input = sc.nextLine();
+		if(sc.hasNext()) {
+			sc.nextLine();
+		}
 		return input;
 	}
 }
