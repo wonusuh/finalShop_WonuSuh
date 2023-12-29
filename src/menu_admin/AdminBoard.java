@@ -23,13 +23,14 @@ public class AdminBoard implements MenuCommand {
 	@Override
 	public boolean update() {
 		int sel = Util.getValue("메뉴 선택", 0, 3);
-		if (sel == 0) { // 프로그램 종료
-			cont.setNext(null);
-		} else if (sel == 1) { // 게시글 목록
-			boardDAO.showAdminBoard();
+		if (sel == 1) { // 게시글 목록
+			boardDAO.showBoard();
 		} else if (sel == 2) { // 게시글 삭제
+			boardDAO.deleteAPostAsAdmin();
 		} else if (sel == 3) { // 뒤로가기
 			cont.setNext("AdminMain");
+		} else if (sel == 0) { // 프로그램 종료
+			cont.setNext(null);
 		}
 		return false;
 	}

@@ -9,21 +9,21 @@ import dto.Item;
 import util.Util;
 
 public class ItemDAO {
-	ArrayList<Item> itemList;
-	CartDAO cartDAO;
+	private ArrayList<Item> itemList;
+	private CartDAO cartDAO;
 
-	private ItemDAO() {
+	private ItemDAO() { // 생성자 입니다.
 		itemList = new ArrayList<Item>();
 		cartDAO = CartDAO.getInstance();
 	}
 
 	private static ItemDAO instance = new ItemDAO();
 
-	public static ItemDAO getInstance() {
+	public static ItemDAO getInstance() { // 생성자를 리턴합니다.
 		return instance;
 	}
 
-	public void putDataIn(String data) {
+	public void putDataIn(String data) { // String 타입의 데이터를 배열로 만듭니다.
 		String[] datas = data.split("\n");
 		for (String str : datas) {
 			String[] splitted = str.split("/");
@@ -37,13 +37,13 @@ public class ItemDAO {
 		}
 	}
 
-	public void showAllItems() {
+	private void showAllItems() { // 아이템 목록을 출력합니다.
 		System.out.println("==========[ 카테고리별 아이템 목록 ]==========");
 		itemList.stream().sorted().forEach(item -> System.out.printf("[%-3d] [%5s] [%5s] [%10d]\n", item.getItemNum(),
 				item.getCategoryName(), item.getItemName(), item.getPrice()));
 	}
 
-	public List<String> getCategoryList() {
+	public List<String> getCategoryList() { // 중복을 제거한 카테고리 리스트를 만들어 리턴합니다.
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < itemList.size(); i += 1) {
 			boolean isDupl = false;
@@ -58,7 +58,7 @@ public class ItemDAO {
 		return list;
 	}
 
-	public void shopping(String category) {
+	public void shopping(String category) { // 해당하는 카테고리의 아이템을 쇼핑합니다.
 		MallController cont = MallController.getInstance();
 		while (true) {
 			System.out.printf("[ %s 의 아이템 목록 ]\n", category);
@@ -86,7 +86,7 @@ public class ItemDAO {
 		cont.setNext("MemberMain");
 	}
 
-	private int getItemNumByName(String itemName) {
+	private int getItemNumByName(String itemName) { // 아이템의 이름을 입력받아 해당하는 객체의 인덱스를 리턴합니다.
 		for (Item item : itemList) {
 			if (item.getItemName().equals(itemName))
 				return item.getItemNum();
@@ -100,5 +100,47 @@ public class ItemDAO {
 				return o;
 		}
 		return null;
+	}
+
+	public void addAnItem() { // 아이템을 한 개 추가합니다.
+		showAllItems();
+		String itemName = Util.getValue("아이템의 이름을 입력하세요.");
+		if (isTheCategoryExist(itemName) || getItemNumByName(itemName) != -1) {
+			System.out.println("이미 존재하는 카테고리/아이템 이름입니다.");
+			return;
+		}
+		String categoryName = Util.getValue("카테고리의 이름을 입력하세요.");
+		int price = Util.getValue("가격을 입력하세요.", 100, 1000000);
+		Item newItem = new Item();
+		Item.increaseNum();
+		newItem.setItemNum(Item.getNum());
+		newItem.setCategoryName(categoryName);
+		newItem.setItemName(itemName);
+		newItem.setPrice(price);
+		itemList.add(newItem);
+		System.out.println("아이템을 추가했습니다.");
+	}
+
+	private boolean isTheCategoryExist(String itemName) { // 아이템 이름으로 검색해서 카테고리가 존재하는지 아닌지를 리턴합니다.
+		for (Item item : itemList) {
+			if (item.getCategoryName().equals(itemName))
+				return true;
+		}
+		return false;
+	}
+
+	public void deleteAnItem() { // 아이템의 번호를 입력받아 삭제합니다.
+		showAllItems();
+		System.out.println("[ 아이템을 삭제하면 구매내역도 사라집니다. ]");
+		int itemNum = Util.getValue("삭제할 아이템의 번호를 입력하세요.", 1, Item.getNum());
+		for (Item item : itemList) {
+			if (item.getItemNum() == itemNum) {
+				itemList.remove(item);
+				cartDAO.clearCartByItemNum(itemNum);
+				System.out.println("아이템을 삭제했습니다.");
+				return;
+			}
+		}
+		System.out.println("아이템삭제에 실패했습니다.");
 	}
 }

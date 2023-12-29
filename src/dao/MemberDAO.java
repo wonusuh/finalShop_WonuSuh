@@ -6,7 +6,7 @@ import dto.Member;
 import util.Util;
 
 public class MemberDAO {
-	ArrayList<Member> memberList;
+	private ArrayList<Member> memberList;
 
 	private MemberDAO() {
 		memberList = new ArrayList<Member>();
@@ -84,7 +84,20 @@ public class MemberDAO {
 		}
 	}
 
-	public void quit(Member o) { // 해당하는 객체를 배열에서 지웁니다.
+	public void quit(Member o) { // 해당하는 회원을 배열에서 지웁니다.
 		memberList.remove(o);
+	}
+
+	public void deleteAMember() { // 아이디를 입력받아 해당회원과 구매목록을 지웁니다.
+		System.out.println("회원 삭제시 구매 내역이 사라집니다.");
+		String id = Util.getValue("삭제할 회원의 아이디를 입력하세요.");
+		if (id.equals("admin") || getMemberById(id) == null) {
+			System.out.println("삭제에 실패했습니다.");
+			return;
+		}
+		CartDAO cartDAO = CartDAO.getInstance();
+		cartDAO.clearCartByObject(getMemberById(id));
+		quit(getMemberById(id));
+		System.out.println("삭제에 성공했습니다.");
 	}
 }

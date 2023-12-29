@@ -17,19 +17,20 @@ public class AdminMember implements MenuCommand {
 		System.out.println("[1] 회원목록");
 		System.out.println("[2] 회원삭제");
 		System.out.println("[3] 뒤로가기");
-		System.out.println("[0] 종료");
+		System.out.println("[0] 프로그램 종료");
 	}
 
 	@Override
 	public boolean update() {
 		int sel = Util.getValue("메뉴 선택", 0, 3);
-		if (sel == 0) { // 종료
-			System.out.println("[ 프로그램 종료 ]");
-			cont.setNext(null);
-		} else if (sel == 1) { // 회원목록
+		if (sel == 1) { // 회원 목록
 			memberDAO.printAllMembers();
 		} else if (sel == 2) { // 회원삭제
+			memberDAO.deleteAMember();
 		} else if (sel == 3) { // 뒤로가기
+			cont.setNext("AdminMain");
+		} else if (sel == 0) { // 프로그램 종료
+			cont.setNext(null);
 		}
 		return false;
 	}

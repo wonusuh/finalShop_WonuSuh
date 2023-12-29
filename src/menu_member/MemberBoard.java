@@ -25,7 +25,7 @@ public class MemberBoard implements MenuCommand {
 	public boolean update() {
 		int sel = Util.getValue("메뉴 선택", 0, 4);
 		if (sel == 1) { // 게시글 보기
-			boardDAO.showMemberBoard();
+			boardDAO.showBoard();
 		} else if (sel == 2) { // 게시글 추가
 			boardDAO.addAPost();
 		} else if (sel == 3) { // 내 게시글 (삭제)

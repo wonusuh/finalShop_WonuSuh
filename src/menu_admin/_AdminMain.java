@@ -31,6 +31,8 @@ public class _AdminMain implements MenuCommand {
 		} else if (sel == 3) { // 게시판관리
 			cont.setNext("AdminBoard");
 		} else if (sel == 4) { // 로그아웃
+			System.out.println("[ 로그아웃 했습니다. ]");
+			cont.setLoginId(null);
 			cont.setNext("MallMain");
 		} else if (sel == 5) { // 파일저장
 		}

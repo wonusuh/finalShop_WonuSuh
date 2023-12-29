@@ -9,7 +9,7 @@ import dto.Board;
 import util.Util;
 
 public class BoardDAO {
-	ArrayList<Board> boardList;
+	private ArrayList<Board> boardList;
 
 	private BoardDAO() {
 		boardList = new ArrayList<Board>();
@@ -37,17 +37,7 @@ public class BoardDAO {
 		}
 	}
 
-	public void showAdminBoard() { // 관리자 게시판입니다.
-		System.out.println("=====[ 전체 게시글 목록 ]=====");
-		System.out.printf("총 게시글 %d 개\n", boardList.size());
-		int i = 0;
-		for (Board b : boardList) {
-			System.out.printf("(%3d) [ 제목 : %-10s 작성자 : %-10s 날짜 : %s 조회수 : %-3d ]\n", ++i, b.getTitle(), b.getId(),
-					b.getDate(), b.getHits());
-		}
-	}
-
-	public void showMemberBoard() { // 회원 게시판 입니다.
+	public void showBoard() { // 게시판을 페이지를 나누어 보여줍니다.
 		int size = 5, curPage = 1, lastPage = boardList.size() / size;
 		if (boardList.size() % size != 0)
 			lastPage += 1;
@@ -58,9 +48,9 @@ public class BoardDAO {
 			System.out.printf("총 게시글 %d 개\n", boardList.size());
 			System.out.printf("현재 페이지 [%d / %d]\n", curPage, lastPage);
 			for (int i = firstPost; i < lastPost; i += 1) {
-				System.out.printf("(%3d) [ 제목 : %-10s 작성자 : %-10s 날짜 : %s 조회수 : %-3d ]\n",
-						boardList.get(i).getBoradNum(), boardList.get(i).getTitle(), boardList.get(i).getId(),
-						boardList.get(i).getDate(), boardList.get(i).getHits());
+				System.out.printf("(%3d) [ 제목 : %-10s 작성자 : %-10s 날짜 : %s 조회수 : %-3d ]\n", i + 1,
+						boardList.get(i).getTitle(), boardList.get(i).getId(), boardList.get(i).getDate(),
+						boardList.get(i).getHits());
 			}
 			System.out.println("[1] 이전");
 			System.out.println("[2] 이후");
@@ -86,7 +76,10 @@ public class BoardDAO {
 				System.out.printf("    %s\n", boardList.get(choice).getContents());
 			} else if (sel == 0) { // 뒤로가기
 				MallController cont = MallController.getInstance();
-				cont.setNext("MemberBoard");
+				if (cont.getLoginId().equals("admin"))
+					cont.setNext("AdminBoard");
+				else
+					cont.setNext("MemberBoard");
 				break;
 			}
 		}
@@ -135,12 +128,36 @@ public class BoardDAO {
 
 	private void deleteAPost() { // 번호를 입력받아서 게시글 하나를 삭제합니다.
 		MallController cont = MallController.getInstance();
-		int num = Util.getValue("삭제할 게시물의 번호 입력", 1, boardList.size()) - 1;
-		if (boardList.get(num).getId().equals(cont.getLoginId())) {
-			boardList.remove(num);
-			System.out.println("해당 게시글을 삭제했습니다.");
-		} else {
-			System.out.println("내가 작성한 게시글만 삭제할 수 있습니다.");
+		int num = Util.getValue("삭제할 게시물의 번호 입력", 1, Board.getNum());
+		for (Board post : boardList) {
+			if (post.getBoradNum() == num) {
+				if (post.getId().equals(cont.getLoginId())) {
+					boardList.remove(post);
+					System.out.println("게시글을 삭제했습니다.");
+					return;
+				} else {
+					System.out.println("내 게시글만 삭제할 수 있습니다.");
+				}
+			}
 		}
+		System.out.println("삭제에 실패했습니다.");
+	}
+
+	public void deleteAPostAsAdmin() {
+		for (Board b : boardList) {
+			System.out.printf("(%3d) [ 제목 : %-10s 작성자 : %-10s 날짜 : %s 조회수 : %-3d ]\n", b.getBoradNum(), b.getTitle(),
+					b.getId(), b.getDate(), b.getHits());
+			System.out.println("    " + b.getContents());
+			System.out.println("--------------------");
+		}
+		int num = Util.getValue("삭제할 게시글의 고유번호를 입력하세요.", 1, Board.getNum());
+		for (Board post : boardList) {
+			if (post.getBoradNum() == num) {
+				boardList.remove(post);
+				System.out.println("게시글을 삭제했습니다.");
+				return;
+			}
+		}
+		System.out.println("존재하지 않는 게시물입니다.");
 	}
 }

@@ -1,17 +1,19 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import dto.Cart;
 import dto.Item;
 import dto.Member;
 
 public class CartDAO {
-	ArrayList<Cart> cartList;
+	private ArrayList<Cart> cartList;
 
 	private CartDAO() {
 		cartList = new ArrayList<Cart>();
@@ -79,7 +81,40 @@ public class CartDAO {
 				cartList.remove(i);
 				i -= 1;
 			}
-			System.out.println(cartList);
+		}
+	}
+
+	protected void clearCartByItemNum(int itemNum) { // 해당하는 아이템을 주문목록에서 모두 지웁니다.
+		for (int i = 0; i < cartList.size(); i += 1) {
+			if (cartList.get(i).getItemNum() == itemNum) {
+				cartList.remove(i);
+				i -= 1;
+			}
+		}
+	}
+
+	public void showEarnings() { // 아이템을 구매한 갯수의 내림차순으로 정렬하고 출력합니다.
+		ItemDAO itemDAO = ItemDAO.getInstance();
+		Map<Integer, Integer> result = new LinkedHashMap<Integer, Integer>();
+		for (int i = 0; i < cartList.size(); i += 1) {
+			if (!result.containsKey(cartList.get(i).getItemNum())) {
+				result.put(cartList.get(i).getItemNum(), cartList.get(i).getItemCnt());
+			} else {
+				result.replace(cartList.get(i).getItemNum(),
+						result.get(cartList.get(i).getItemNum()) + cartList.get(i).getItemCnt());
+			}
+		}
+		Map<Integer, Integer> finalResult = result.entrySet().stream()
+				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (x, y) -> {
+					throw new AssertionError();
+				}, LinkedHashMap::new));
+		Iterator<Integer> keys = finalResult.keySet().iterator();
+		while (keys.hasNext()) {
+			int key = keys.next();
+			Item o = itemDAO.getTheObjectByNum(key);
+			System.out.printf("[%-3d] [%10s] [%10s] [%20d] %d개\n", key, o.getCategoryName(), o.getItemName(),
+					o.getPrice(), finalResult.get(key));
 		}
 	}
 }
