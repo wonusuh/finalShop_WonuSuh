@@ -64,9 +64,9 @@ public class Util {
 	public static String getContent(String string) {
 		System.out.printf("▶ %s 입력 : ", string);
 		String input = sc.nextLine();
-		if(sc.hasNext()) {
-			sc.nextLine();
-		}
+//		if(sc.hasNext()) {
+//			sc.nextLine();
+//		}
 		return input;
 	}
 }
